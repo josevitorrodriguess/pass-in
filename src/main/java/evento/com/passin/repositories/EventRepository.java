@@ -1,4 +1,4 @@
-package evento.com.passin.domain.repositories;
+package evento.com.passin.repositories;
 
 import evento.com.passin.domain.event.Event;
 import org.springframework.data.jpa.repository.JpaRepository;
