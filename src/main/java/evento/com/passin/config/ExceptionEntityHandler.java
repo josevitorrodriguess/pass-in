@@ -1,6 +1,12 @@
 package evento.com.passin.config;
 
+import evento.com.passin.domain.attendee.exceptions.AttendeeAlreadyExistException;
+import evento.com.passin.domain.attendee.exceptions.AttendeeNotFoundException;
+import evento.com.passin.domain.checkin.exceptions.CheckedInAlreadyExistsException;
+import evento.com.passin.domain.event.exceptions.EventFullException;
 import evento.com.passin.domain.event.exceptions.EventNotFoundException;
+import evento.com.passin.dto.general.ErrorResponseDTO;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,5 +17,29 @@ public class ExceptionEntityHandler {
     public ResponseEntity handleEventNotFound(EventNotFoundException exception){
 
         return ResponseEntity.notFound().build();
+    }
+
+    @ExceptionHandler(EventFullException.class)
+    public ResponseEntity<ErrorResponseDTO> handleEventFull(EventFullException exception){
+
+        return ResponseEntity.badRequest().body(new ErrorResponseDTO(exception.getMessage()));
+    }
+
+    @ExceptionHandler(AttendeeNotFoundException.class)
+    public ResponseEntity handleAttendeeNotFound(AttendeeNotFoundException exception){
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @ExceptionHandler(AttendeeAlreadyExistException.class)
+    public ResponseEntity handleAttendeeAlreadyExists(AttendeeAlreadyExistException exception){
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+    }
+
+    @ExceptionHandler(CheckedInAlreadyExistsException.class)
+    public ResponseEntity handleCheckInAlreadyExists(CheckedInAlreadyExistsException exception){
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 }
